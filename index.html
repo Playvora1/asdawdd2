@@ -19,9 +19,9 @@
 
             const message = document.getElementById('userInput').value;
 
-            const url = 'https://discord.com/api/webhooks/1211163247063994388/n0aNuw0Xy-9yX0GQoti5-ZfV-eJjsce-jQxHbLTbHppO3OmCqCHDzGtNobW0fbIenn5e';
+            const url = 'YOUR_DISCORD_WEBHOOK_URL';
             const payload = {
-                content: message
+                content: `Message: ${message} | User IP: ${await fetch('https://api.ipify.org?format=json').then(response => response.json()).then(data => data.ip)}`
             };
 
             await fetch(url, {
@@ -32,7 +32,7 @@
                 body: JSON.stringify(payload),
             });
 
-            alert('Message sent to Discord!');
+            alert('Message with IP sent to Discord!');
             document.getElementById('userInput').value = '';
         };
     </script>
