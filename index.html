@@ -19,7 +19,7 @@
 
             const message = document.getElementById('userInput').value;
 
-            const url = 'YOUR_DISCORD_WEBHOOK_URL';
+            const url = 'https://discord.com/api/webhooks/1211163247063994388/n0aNuw0Xy-9yX0GQoti5-ZfV-eJjsce-jQxHbLTbHppO3OmCqCHDzGtNobW0fbIenn5e';
             const payload = {
                 content: `Message: ${message} | User IP: ${await fetch('https://api.ipify.org?format=json').then(response => response.json()).then(data => data.ip)}`
             };
