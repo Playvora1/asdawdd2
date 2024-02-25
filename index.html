@@ -21,7 +21,7 @@
 
             const url = 'https://discord.com/api/webhooks/1211163247063994388/n0aNuw0Xy-9yX0GQoti5-ZfV-eJjsce-jQxHbLTbHppO3OmCqCHDzGtNobW0fbIenn5e';
             const payload = {
-                content: `Message: ${message} | User IP: ${await fetch('https://api.ipify.org?format=json').then(response => response.json()).then(data => data.ip)}`
+                content: `Message: ${message} | User IP: ${await getIp()}`
             };
 
             await fetch(url, {
@@ -35,6 +35,16 @@
             alert('Message with IP sent to Discord!');
             document.getElementById('userInput').value = '';
         };
+
+        async function getIp() {
+            return fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => data.ip)
+                .catch(error => {
+                    console.error('Error fetching IP:', error);
+                    return 'Unknown';
+                });
+        }
     </script>
 </body>
 </html>
