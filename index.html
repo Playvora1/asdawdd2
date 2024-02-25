@@ -1,0 +1,27 @@
+// server.js
+const express = require('express');
+const bodyParser = require('body-parser');
+const fetch = require('node-fetch');
+
+const app = express();
+app.use(bodyParser.json());
+
+const WEBHOOK_URL = 'YOUR_WEBHOOK_URL'; // Replace this with your actual webhook URL
+
+app.post('/send-ip-to-webhook', (req, res) => {
+    const { ip } = req.body;
+
+    fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ip }),
+    })
+    .then(response => res.send('IP sent to webhook'))
+    .catch(error => res.status(500).send('Error sending IP to webhook'));
+});
+
+app.listen(3000, () => {
+    console.log('Server running on port 3000');
+});
