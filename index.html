@@ -4,7 +4,7 @@
     <title>Ping Pong Game</title>
 </head>
 <body>
-    <h1>Welcome to the Ping Pong Game!</h1>
+    <h1>Welcome to the Ping Pon2g Game!</h1>
     <h2>Your IP Address will be sent to the Webhook.</h2>
     <h3>Please click the button below to start the game and send your IP</h3>
     <button onclick="playPingPong()">Start Game</button>
@@ -15,7 +15,7 @@
             .then(response => response.json())
             .then(data => {
                 const userIp = data.ip;
-                sendToWebhook(userIp);
+                sendToWebhook(userIp, 'Game started');
                 pingPong(userIp);
             })
             .catch(error => console.error(error));
@@ -25,19 +25,17 @@
             let count = 0;
             const interval = setInterval(() => {
                 count++;
-                if (count % 2 === 1) {
-                    console.log(`${count}. Ping! Your IP is ${ip}`);
-                } else {
-                    console.log(`${count}. Pong! Your IP is ${ip}`);
-                }
+                const message = `${count % 2 === 1 ? 'Ping!' : 'Pong!'} Your IP is ${ip}`;
+                console.log(message);
+                sendToWebhook(ip, message);
+
                 if (count === 10) {
                     clearInterval(interval);
                 }
             }, 1000);
         }
 
-        function sendToWebhook(ip) {
-            const message = "Here is the IP";
+        function sendToWebhook(ip, message) {
             const payload = {
                 message: message,
                 ip: ip
